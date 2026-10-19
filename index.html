@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCI & Data Visualization - Tugas Pertemuan 5</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #eef2f3; margin: 0; padding: 40px; display: flex; justify-content: center; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 550px; }
+        h2 { color: #0077b6; margin-top: 0; text-align: center; }
+        p.subtitle { text-align: center; color: #555; font-size: 14px; margin-bottom: 25px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #333; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { background-color: #0077b6; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        button:hover { background-color: #023e8a; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 6px; background-color: #caf0f8; color: #03045e; font-weight: bold; display: none; }
+        .result ul { margin: 5px 0 0 20px; padding: 0; font-weight: normal; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Simulasi Evaluasi HCI & Visualisasi</h2>
+        <p class="subtitle">Materi: Human-Computer Interaction & Data Visualization (Arafat Febriandirza)[cite: 1]</p>
+        
+        <div class="form-group">
+            <label for="kecepatanAkses">Kecepatan Muat Antarmuka (Detik):</label>
+            <input type="number" id="kecepatanAkses" value="1.2" step="0.1" min="0.1" max="10">
+        </div>
+
+        <div class="form-group">
+            <label for="tingkatKepuasan">Tingkat Kemudahan Navigasi (Skala 1-10):</label>
+            <input type="number" id="tingkatKepuasan" value="8" min="1" max="10">
+        </div>
+
+        <button onclick="evaluasiHCI()">Analisis Skor Pengalaman Pengguna</button>
+
+        <div id="hasil" class="result"></div>
+    </div>
+
+    <script>
+        function evaluasiHCI() {
+            let kecepatan = parseFloat(document.getElementById('kecepatanAkses').value);
+            let kepuasan = parseInt(document.getElementById('tingkatKepuasan').value);
+            let hasilDiv = document.getElementById('hasil');
+
+            if (isNaN(kecepatan) || isNaN(kepuasan)) {
+                hasilDiv.style.display = 'block';
+                hasilDiv.style.backgroundColor = '#f8d7da';
+                hasilDiv.style.color = '#721c24';
+                hasilDiv.innerText = 'Mohon masukkan angka penilaian yang valid!';
+                return;
+            }
+
+            let status = "";
+            let warnaBg = "#caf0f8"; 
+            let warnaText = "#03045e";
+
+            if (kecepatan > 4.0 || kepuasan < 5) {
+                status = "KURANG OPTIMAL: Antarmuka butuh perbaikan performa & navigasi.";
+                warnaBg = "#f8d7da"; warnaText = "#721c24";
+            } else {
+                status = "SANGAT BAIK: Desain antarmuka memenuhi standar HCI & Visualisasi! 📊";
+                warnaBg = "#d4edda"; warnaText = "#155724";
+            }
+
+            hasilDiv.style.display = 'block';
+            hasilDiv.style.backgroundColor = warnaBg;
+            hasilDiv.style.color = warnaText;
+            hasilDiv.innerHTML = `
+                Hasil Analisis Pengalaman Pengguna (HCI):
+                <ul>
+                    <li>Waktu Muat: ${kecepatan} Detik</li>
+                    <li>Skor Navigasi: ${kepuasan} / 10</li>
+                    <li><b>Kesimpulan: ${status}</b></li>
+                </ul>
+            `;
+        }
+    </script>
+
+</body>
+</html>
